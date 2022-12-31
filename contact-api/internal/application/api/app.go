@@ -14,25 +14,32 @@ func NewApplication(db ports.DBPort) *Application {
 } 
 
 func(app Application) AllContacts() ([]models.Contact, error) {
- return nil, nil
+	contacts, err :=	app.db.FindAll()
+	if err != nil {
+		return nil, err
+	}
+ return contacts, nil
 }
 
-func(app Application) FindByID(string) (models.Contact, error) {
-	return models.Contact{}, nil
+func(app Application) FindByID(id string) (models.Contact, error) {
+	contact, err := app.db.FindByID(id)
+	if err != nil {
+		return models.Contact{}, err
+	}
+	return contact, nil
 }
 
-func(app Application) FindByEmail(string) (models.Contact, error) {
-	return models.Contact{}, nil
+func(app Application) CreateContact(contact models.Contact) (error) {
+	err := app.db.Insert(contact)
+	return err
 }
 
-func(app Application) CreateContact(models.Contact) (error) {
-	return nil
+func(app Application) UpdateContact(contact models.Contact) (error) {
+	err := app.db.Update(contact)
+	return err
 }
 
-func(app Application) UpdateContact(models.Contact) (models.Contact, error) {
-	return models.Contact{}, nil
-}
-
-func(app Application) DeleteContact(string) (error) {
-	return nil
+func(app Application) DeleteContact(contact models.Contact) (error) {
+	err := app.db.Delete(contact)
+	return err
 }

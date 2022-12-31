@@ -4,6 +4,7 @@ import (
 	"github.com/sm/contact-api/config"
 	"github.com/sm/contact-api/internal/models"
 	mgo "gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type Adapter struct {
@@ -23,26 +24,29 @@ func NewAdapter(dbConfg config.Config) (*Adapter, error) {
 	return &Adapter{db: db}, nil
 }
 
-func (db *Adapter) AllContacts() ([]models.Contact, error) {
-	return nil, nil
+func (dbAdapter *Adapter) FindAll() ([]models.Contact, error) {
+	var contacts []models.Contact
+	err := dbAdapter.db.C(COLLECTION).Find(bson.M{}).All(&contacts)
+	return contacts, err
 }
 
-func (db *Adapter) FindByID(string) (models.Contact, error) {
-	return models.Contact{}, nil
+func (dbAdapter *Adapter) FindByID(id string) (models.Contact, error) {
+	var contact models.Contact
+	err := dbAdapter.db.C(COLLECTION).FindId(bson.ObjectIdHex(id)).One(&contact)
+	return contact, err
 }
 
-func (db *Adapter) FindByEmail(string) (models.Contact, error) {
-	return models.Contact{}, nil
+func (dbAdapter *Adapter) Insert(contact models.Contact) (error) {
+	err := dbAdapter.db.C(COLLECTION).Insert(&contact)
+	return err
 }
 
-func (db *Adapter) CreateContact(models.Contact) (error) {
-	return nil
+func (dbAdapter *Adapter) Update(contact models.Contact) (error) {
+	err := dbAdapter.db.C(COLLECTION).UpdateId(contact.ID, &contact)
+	return err
 }
 
-func (db *Adapter) UpdateContact(models.Contact) (models.Contact, error) {
-	return models.Contact{}, nil
-}
-
-func (db *Adapter) DeleteContact(string) (error) {
-	return nil
+func (dbAdapter *Adapter) Delete(contact models.Contact) (error) {
+	err := dbAdapter.db.C(COLLECTION).Remove(&contact)
+	return err
 }

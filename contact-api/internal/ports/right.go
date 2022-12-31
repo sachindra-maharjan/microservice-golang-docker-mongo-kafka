@@ -5,10 +5,9 @@ import (
 )
 
 type DBPort interface {
-	AllContacts() ([]models.Contact, error)
+	FindAll() ([]models.Contact, error)
 	FindByID(string) (models.Contact, error)
-	FindByEmail(string) (models.Contact, error)
-	CreateContact(models.Contact) (error)
-	UpdateContact(models.Contact) (models.Contact, error)
-	DeleteContact(string) (error)
+	Insert(models.Contact) (error)
+	Update(models.Contact) (error)
+	Delete(models.Contact) (error)
 }

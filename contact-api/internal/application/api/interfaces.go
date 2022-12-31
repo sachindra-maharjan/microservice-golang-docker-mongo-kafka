@@ -8,8 +8,7 @@ import (
 type ContactApi interface {
 	AllContacts() ([]Contact, error)
 	FindByID(string) (Contact, error)
-	FindByEmail(string) (Contact, error)
 	CreateContact(Contact) (error)
-	UpdateContact(Contact) (Contact, error)
-	DeleteContact(string) (error)
+	UpdateContact(Contact) (error)
+	DeleteContact(Contact) (error)
 }
