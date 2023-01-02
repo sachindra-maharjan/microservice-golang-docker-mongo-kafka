@@ -18,7 +18,7 @@ func (resta Adapter) Status(w http.ResponseWriter, r *http.Request) {
 	genResponse(w, http.StatusOK, map[string]string{"server": name, "result": "success"})
 }
 
-func (resta Adapter)AllContacts(w http.ResponseWriter, r *http.Request) {
+func (resta Adapter) AllContacts(w http.ResponseWriter, r *http.Request) {
 	contacts, err := resta.api.AllContacts()
 	if err != nil {
 		responseWithError(w, http.StatusBadRequest, err.Error())
